@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <AssemblyName>SmtpServer</AssemblyName>
+    <RootNamespace>SmtpServer</RootNamespace>
+    <Version>9.0.2-beta1</Version>
+    <Description>.NET SmtpServer</Description>
+    <Authors>Cain O'Sullivan</Authors>
+    <Company />
+    <Copyright>2015-2022</Copyright>
+    <RepositoryUrl>https://github.com/cosullivan/SmtpServer</RepositoryUrl>
+    <PackageProjectUrl>http://cainosullivan.com/smtpserver</PackageProjectUrl>
+    <PackageTags>smtp smtpserver smtp server</PackageTags>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <AssemblyVersion>9.0.2-Beta1</AssemblyVersion>
+    <FileVersion>9.0.2.0</FileVersion>
+    <PackageReleaseNotes>Version 9.0.2
+Fixed a performance issue whereby the server would block incoming connections whilst another connection was upgrading to SSL.
+
+Version 9
+Breaking API change by removing the Certificate from the server options and adding it to the endpoint.
+</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Pipelines" Version="4.7.2" />
+  </ItemGroup>
+
+</Project>
