@@ -58,6 +58,7 @@
               <table class="display" id="tb_empleados" style="width:100%">
                   <thead>
                     <tr>
+                     <th><input name="select_all" type="checkbox" id="tb_empleados-select-all" /></th>
                       <th>IdEmpleado</th>
                       <th>Nombre</th>
                       <th>Cargo</th>
@@ -112,7 +113,7 @@
              $('#tb_empleados thead tr').clone(true).addClass('filters').appendTo('#tb_empleados thead');
 
 
-            $('#tb_empleados').DataTable({
+            let table =  $('#tb_empleados').DataTable({
                 //_______________PRIMERO____________
                 "ajax": {
                     "url": '@Url.Action("ListaEmpleados", "Home")',
@@ -120,6 +121,12 @@
                     "datatype": "json"
                 },
                 "columns": [
+                    {
+                        'data': null,
+                        'defaultContent': '',
+                        'className': 'select-checkbox',
+                        'orderable': false
+                    },
                     { "data": "idEmpleado" },
                     { "data": "nombre" },
                     { "data": "cargo" },
@@ -133,10 +140,18 @@
                     url:"https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
                 },
                 //________________ TERCERO ____________
-                columnDefs:[
+                columnDefs: [
                     {
-                        targets: 0,
-                        visible:false
+                        'targets': 0,
+                        'searchable': false,
+                        'orderable': false,
+                        'className': 'dt-body-center',
+                        'render': function (data, type, full, meta) {
+                            return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                        },
+                        'checkboxes': {
+                            'selectRow': true
+                        }
                     }
                 ],
                 //_______________ CUARTO ______________
@@ -230,7 +245,26 @@
 
             });
 
+            // Manejar el checkbox para seleccionar todos los registros
+            $('#tb_empleados-select-all').on('click', function () {
+                // Obtener todas las filas de la tabla
+                console.log("test");
+                var rows = table.rows({ 'search': 'applied' }).nodes();
+                // Obtener todos los checkboxes
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
 
+            // Manejar la selección de checkboxes de cada fila para reflejar la selección/deselección en el checkbox "Seleccionar todo"
+            $('#tb_empleados tbody').on('change', 'input[type="checkbox"]', function () {
+                // Si el checkbox no está seleccionado...
+                if (!this.checked) {
+                    var el = $('#tb_empleados-select-all').get(0);
+                    // Si el "Seleccionar todo" está marcado...
+                    if (el && el.checked && ('indeterminate' in el)) {
+                        el.indeterminate = true;
+                    }
+                }
+            });
 
         } );
     </script>
